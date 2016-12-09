@@ -99,7 +99,7 @@ Custom property | Description | Default
             <div class="node-row">
                 <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
                 <at-carbon-icon class="node-icon" icon$="{{_computeIcon(data.icon)}}" on-click="select"></at-carbon-icon>
-                <span class="node-name" on-click="select">{{_computeName(data)}}</span>
+                <span class="node-name" on-click="select">{{_computeDisplayTitle(data)}}</span>
                 <template is="dom-if" if="{{actions.length}}">
                     <paper-menu-button id="actions">
                         <at-carbon-icon-button icon="menu2" noink class="dropdown-trigger"></at-carbon-icon-button>
@@ -192,7 +192,7 @@ Custom property | Description | Default
             return icon ? icon : 'folder';
         },
 
-        _computeName: function(data) {
+        _computeDisplayTitle: function(data) {
           return data ? (data.title || data.id) : "";
         },
 
