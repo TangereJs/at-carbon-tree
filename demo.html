@@ -3,14 +3,14 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+    <meta title="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
     <title>at-carbon-tree Demo</title>
     <script src="../webcomponentsjs/webcomponents-lite.js"></script>
 
     <link rel="import" href="at-carbon-tree.html">
     <link rel="import" href="../iron-demo-helpers/demo-pages-shared-styles.html">
-    <link rel="import" href="../iron-demo-helpers/demo-snippet.html">
-
+    <!-- <link rel="import" href="../iron-demo-helpers/demo-snippet.html"> -->
+    <link rel="import" href="../at-doc-snippet/at-doc-snippet.html">
     <style is="custom-style" include="demo-pages-shared-styles"></style>
     <style is="custom-style">
       :root {
@@ -21,9 +21,10 @@
 <body>
 
 <div class="vertical-section-container centered">
+    <h3>at-doc-snippet has a bug where content of script tag is not evaluated. This breaks at-carbon-tree demo page</h3>
 
     <h3>Basic demo with only one node</h3>
-    <demo-snippet>
+    <at-doc-snippet>
         <template>
             <at-carbon-tree id="tree1"></at-carbon-tree>
             <script>
@@ -32,15 +33,16 @@
 
                 // Only one node.
                 tree.data = {
-                    "name": "Hello"
+                    "title": "Hello",
+                    "id": "hello"
                 };
 
             </script>
         </template>
-    </demo-snippet>
+    </at-doc-snippet>
 
     <h3>Basic demo with one root node and some children</h3>
-    <demo-snippet>
+    <at-doc-snippet>
         <template>
             <at-carbon-tree id="tree2"></at-carbon-tree>
             <script>
@@ -49,22 +51,25 @@
 
                 // Some children.
                 tree.data = {
-                    "name": "Hello",
+                    "title": "Hello",
+                    "id": "hello",
                     "children": [{
-                        "name": "World"
+                        "title": "World",
+                        "id": "world"
                     }, {
-                        "name": "There"
+                        "id": "There"
                     }, {
-                        "name": "You"
+                        "title": "You",
+                        "id": "you"
                     }]
                 };
             </script>
         </template>
-    </demo-snippet>
+    </at-doc-snippet>
 
 
     <h3>Complex tree demo</h3>
-    <demo-snippet>
+    <at-doc-snippet>
         <template>
             <at-carbon-tree id="tree3"></at-carbon-tree>
             <script>
@@ -73,87 +78,87 @@
 
                 // Setting some data.
                 tree.data = {
-                    "name": "GOT",
-                    "icon": "theaters",
+                    "title": "GOT",
+                    "icon": "video",
                     "open": true,
                     "children": [
                         {
-                            "name": "Starks",
-                            "icon": "turned-in",
+                            "title": "Starks",
+                            "icon": "star-filled",
                             "children": [{
-                                "icon": "account-circle",
-                                "name": "Eddard"
+                                "icon": "user",
+                                "title": "Eddard"
                             }, {
-                                "name": "Catelyn",
-                                "icon": "account-circle"
+                                "title": "Catelyn",
+                                "icon": "user"
                             }, {
-                                "name": "Sansa",
-                                "icon": "account-circle"
+                                "title": "Sansa",
+                                "icon": "user"
                             }, {
-                                "name": "Robb",
-                                "icon": "account-circle"
+                                "title": "Robb",
+                                "icon": "user"
                             }, {
-                                "name": "Bran",
-                                "icon": "account-circle"
+                                "title": "Bran",
+                                "icon": "user"
                             }, {
-                                "name": "Arya",
-                                "icon": "account-circle"
+                                "title": "Arya",
+                                "icon": "user"
                             }, {
-                                "name": "Rickson",
-                                "icon": "account-circle"
+                                "title": "Rickson",
+                                "icon": "user"
                             }]
                         },
                         {
-                            "name": "Lannisters",
+                            "title": "Lannisters",
                             "open": true,
-                            "icon": "turned-in",
+                            "icon": "star-filled",
                             "children": [{
-                                "name": "Tywin",
-                                "icon": "account-circle"
+                                "title": "Tywin",
+                                "icon": "user"
                             }, {
-                                "name": "Tyrion",
-                                "icon": "account-circle"
+                                "title": "Tyrion",
+                                "icon": "user"
                             }, {
-                                "name": "Jaime",
-                                "icon": "account-circle"
+                                "title": "Jaime",
+                                "icon": "user"
                             }, {
-                                "name": "Cersei",
-                                "icon": "account-circle"
+                                "title": "Cersei",
+                                "icon": "user"
                             }, {
-                                "name": "Tommen",
-                                "icon": "account-circle"
+                                "title": "Tommen",
+                                "icon": "user"
                             }, {
-                                "name": "Myrcella",
-                                "icon": "account-circle"
+                                "title": "Myrcella",
+                                "icon": "user"
                             }, {
-                                "name": "Joffrey",
-                                "icon": "account-circle"
+                                "title": "Joffrey",
+                                "icon": "user"
                             }   ]
                         },
                         {
-                            "name": "Targaryens",
-                            "icon": "turned-in",
+                            "title": "Targaryens",
+                            "icon": "star-filled",
                             "children": [{
-                                "name": "Daenerys",
-                                "icon": "account-circle"
+                                "title": "Daenerys",
+                                "icon": "user"
                             }, {
-                                "name": "Viserys",
-                                "icon": "account-circle"
+                                "title": "Viserys",
+                                "icon": "user"
                             }]
                         },
                         {
-                            "name": "Baratheons",
-                            "icon": "turned-in",
+                            "title": "Baratheons",
+                            "icon": "star-filled",
                             "open": true,
                             "children": [{
-                                "name": "Robert",
-                                "icon": "account-circle"
+                                "title": "Robert",
+                                "icon": "user"
                             }, {
-                                "name": "Stannis",
-                                "icon": "account-circle"
+                                "title": "Stannis",
+                                "icon": "user"
                             }, {
-                                "name": "Renly",
-                                "icon": "account-circle"
+                                "title": "Renly",
+                                "icon": "user"
                             }]
                         }
                     ]
@@ -167,12 +172,12 @@
 
                 // Finally adding a listener for that action.
                 tree.addEventListener('onshow', function(event) {
-                    alert('This is ' + event.detail.data.name);
+                    alert('This is ' + event.detail.data.title);
                 });
 
             </script>
         </template>
-    </demo-snippet>
+    </at-doc-snippet>
 
 </div>
 </body>

@@ -13,96 +13,136 @@ Example:
 
 <dom-module id="at-carbon-tree">
 
-    <template>
+  <template>
         <div>
-            <at-carbon-tree-node id="root" data="[[data]]" actions="[[actions]]"></at-carbon-tree-node>
+            <at-carbon-tree-node id="root" data="[[data]]" actions="[[actions]]" data-node-id$="[[data.id]]"></at-carbon-tree-node>
         </div>
     </template>
 
 </dom-module>
 
 <script>
+  Polymer({
 
-    Polymer({
+    is: 'at-carbon-tree',
 
-        is: 'at-carbon-tree',
+    properties: {
 
-        properties: {
+      /**
+       * Data hold by the root node (contains the children).
+       *
+       * Specific data:
+       *
+       * - `data.name`: string representing the node name.
+       * - `data.icon`: string telling which icon to use (default to 'folder' icon).
+       * - `data.open`: boolean telling whether the node is expanded or not.
+       * - `data.children` array containing the children of the node.
+       */
+      data: {
+        type: Object,
+        value: function() {
+          return null;
+        },
+        observer: "_dataChanged"
+      },
 
-            /**
-             * Data hold by the root node (contains the children).
-             *
-             * Specific data:
-             *
-             * - `data.name`: string representing the node name.
-             * - `data.icon`: string telling which icon to use (default to 'folder' icon).
-             * - `data.open`: boolean telling whether the node is expanded or not.
-             * - `data.children` array containing the children of the node.
-             */
-            data: {
-                type: Object,
-                value: function() {
-                    return null;
-                },
-                observer: "_dataChanged"
-            },
+      /**
+       * `selected` is the current selected `<at-carbon-tree-node>` in the tree.
+       */
+      selected: {
+        type: Object,
+        value: null,
+        notify: true
+      },
 
-            /**
-             * `selected` is the current selected `<at-carbon-tree-node>` in the tree.
-             */
-            selected: {
-                type: Object,
-                value: null,
-                notify: true
-            },
-
-            /**
-             * `actions` available for all nodes. Each action object has the following fields:
-             *
-             * - `action.label`: string representing the display name of the menu item.
-             * - `action.event`: string which is the event name to dispatch whenever the item is clicked.
-             *
-             */
-            actions: {
-                type: Array,
-                value: function() {
-                    return null;
-                },
-                observer: "_actionsChanged"
+      /**
+       * `actions` available for all nodes. Each action object has the following fields:
+       *
+       * - `action.label`: string representing the display name of the menu item.
+       * - `action.event`: string which is the event name to dispatch whenever the item is clicked.
+       *
+       */
+      actions: {
+        type: Array,
+        value: function() {
+          return [];
+        },
+        observer: "_actionsChanged",
+        schema: {
+          items: {
+            properties: {
+              label: {
+                title: "Label",
+                type: String
+              },
+              event: {
+                title: "Event",
+                type: String
+              },
             }
-        },
-
-        listeners: {
-            "select": "_selectNode"
-        },
-
-        /**
-         * Called whenever the data is changed to notify the lower nodes.
-         */
-        _dataChanged: function()  {
-            this.$.root.data = this.data;
-        },
-
-        /**
-         * Called whenever the actions list is changed to notify the lower nodes.
-         */
-        _actionsChanged: function()  {
-            this.$.root.actions = this.actions;
-        },
-
-        /**
-         * Called when the `select` event is fired from an internal node.
-         *
-         * @param {object} e An event object.
-         */
-        _selectNode: function(e) {
-            if(this.selected) {
-                this.toggleClass("selected", false, this.selected);
-            }
-            this.selected = e.target;
-            this.toggleClass("selected", true, this.selected);
+          }
         }
+      }
+    },
 
-    });
+    listeners: {
+      "select": "_selectNode"
+    },
 
+    /**
+     * Called whenever the data is changed to notify the lower nodes.
+     */
+    _dataChanged: function() {
+      function isString(obj) {
+        return Object.prototype.toString.call(obj) === "[object String]";
+      }
+      if (isString(this.data)) {
+        try {
+          this.data = JSON.parse(this.data);
+        } catch (e) {
+          console.log(e);
+        }
+        return;
+      }
+      this.$.root.data = this.data;
+    },
+
+    /**
+     * Called whenever the actions list is changed to notify the lower nodes.
+     */
+    _actionsChanged: function() {
+      this.$.root.actions = this.actions;
+    },
+
+    /**
+     * Called when the `select` event is fired from an internal node.
+     *
+     * @param {object} e An event object.
+     */
+    _selectNode: function(e) {
+      function isString(obj) {
+        return Object.prototype.toString.call(obj) === "[object String]";
+      }
+      var selectedNode;
+
+      if (isString(this.selected) && this.selected !== "") {
+        var rootNodeId = this.$.root.getAttribute('data-node-id');
+        selectedNode = this.selected === rootNodeId ? this.$.root : null;
+        if (!selectedNode) {
+          var selector = 'at-carbon-tree-node[data-node-id='+ this.selected +']';
+          selectedNode = this.$.root.querySelector(selector);
+        }
+      }
+
+      if (selectedNode) {
+        this.toggleClass("selected", false, selectedNode);
+      }
+
+      selectedNode = e.target;
+      this.selected = e.target.getAttribute("data-node-id");
+
+      this.toggleClass("selected", true, selectedNode);
+    }
+
+  });
 </script>

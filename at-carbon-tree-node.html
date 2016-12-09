@@ -1,8 +1,7 @@
 <link rel="import" href="../tangere/tangere.html">
-<link rel="import" href="../iron-icons/iron-icons.html">
-<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../at-carbon-icon/at-carbon-icon.html">
 <link rel="import" href="../paper-menu-button/paper-menu-button.html">
-<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../at-carbon-icon-button/at-carbon-icon-button.html">
 <link rel="import" href="../paper-menu/paper-menu.html">
 <link rel="import" href="../paper-item/paper-item.html">
 
@@ -26,8 +25,6 @@ Custom property | Description | Default
 
 @demo
 -->
-
-<link rel="import" href="../iron-icons/iron-icons.html">
 
 <dom-module id="at-carbon-tree-node">
 
@@ -80,7 +77,7 @@ Custom property | Description | Default
             display: none;
             float: right;
             padding: 0;
-            top: -8px; /* cancel the padding of `paper-icon-button`. */
+            top: -8px; /* cancel the padding of `at-carbon-icon-button`. */
         }
 
         ul {
@@ -101,11 +98,11 @@ Custom property | Description | Default
         <div class="node-container">
             <div class="node-row">
                 <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
-                <iron-icon class="node-icon" icon$="{{_computeIcon(data.icon)}}" on-click="select"></iron-icon>
-                <span class="node-name" on-click="select">{{data.name}}</span>
-                <template is="dom-if" if="{{actions}}">
+                <at-carbon-icon class="node-icon" icon$="{{_computeIcon(data.icon)}}" on-click="select"></at-carbon-icon>
+                <span class="node-name" on-click="select">{{_computeName(data)}}</span>
+                <template is="dom-if" if="{{actions.length}}">
                     <paper-menu-button id="actions">
-                        <paper-icon-button icon="more-vert" noink class="dropdown-trigger"></paper-icon-button>
+                        <at-carbon-icon-button icon="menu2" noink class="dropdown-trigger"></at-carbon-icon-button>
                         <paper-menu class="dropdown-content">
                             <template is="dom-repeat" items="{{actions}}">
                                 <paper-item on-click="_actionClicked">{{item.label}}</paper-item>
@@ -117,7 +114,7 @@ Custom property | Description | Default
             <ul hidden$={{!data.open}}>
                 <template is="dom-repeat" items="{{data.children}}">
                     <li>
-                        <at-carbon-tree-node data="{{item}}" actions="{{actions}}"></at-carbon-tree-node>
+                        <at-carbon-tree-node data="{{item}}" actions="{{actions}}" data-node-id$=[[item.id]]></at-carbon-tree-node>
                     </li>
                 </template>
             </ul>
@@ -195,6 +192,10 @@ Custom property | Description | Default
             return icon ? icon : 'folder';
         },
 
+        _computeName: function(data) {
+          return data ? (data.title || data.id) : "";
+        },
+
         _actionClicked: function (event) {
             this.fire(event.model.item.event, this);
         },
@@ -210,7 +211,7 @@ Custom property | Description | Default
          * Display/Hide the children nodes.
          */
         toggleChildren: function() {
-            this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
+          this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
         }
 
     });
