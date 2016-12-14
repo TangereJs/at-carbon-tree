@@ -100,7 +100,7 @@ Custom property | Description | Default
                 <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
                 <at-carbon-icon class="node-icon" icon$="{{_computeIcon(data.icon)}}" on-click="select"></at-carbon-icon>
                 <span class="node-name" on-click="select">{{_computeDisplayTitle(data)}}</span>
-                <template is="dom-if" if="{{actions.length}}">
+                <template is="dom-if" if="{{actions}}">
                     <paper-menu-button id="actions">
                         <at-carbon-icon-button icon="menu2" noink class="dropdown-trigger"></at-carbon-icon-button>
                         <paper-menu class="dropdown-content">
