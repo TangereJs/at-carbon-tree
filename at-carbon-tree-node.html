@@ -96,11 +96,11 @@ Custom property | Description | Default
 
     <template>
         <div class="node-container">
-            <div class="node-row">
+            <div class="node-row" hidden$={{!data}}>
                 <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
                 <at-carbon-icon class="node-icon" icon$="{{_computeIcon(data.icon)}}" on-click="select"></at-carbon-icon>
                 <span class="node-name" on-click="select">{{_computeDisplayTitle(data)}}</span>
-                <template is="dom-if" if="{{actions}}">
+                <template is="dom-if" if="{{_computeDispalyActions(actions)}}">
                     <paper-menu-button id="actions">
                         <at-carbon-icon-button icon="menu2" noink class="dropdown-trigger"></at-carbon-icon-button>
                         <paper-menu class="dropdown-content">
@@ -180,6 +180,10 @@ Custom property | Description | Default
             var open = change && change.base && change.base.open;
             var children = change && change.base && change.base.children;
             return 'node-preicon ' + ((open && children && children.length) ? 'expanded' : children && children.length ? 'collapsed' : '');
+        },
+
+        _computeDispalyActions: function(actions) {
+          return actions && actions.length;
         },
 
         /**
