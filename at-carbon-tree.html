@@ -14,10 +14,12 @@ Example:
 <dom-module id="at-carbon-tree">
 
   <template>
-        <div>
-            <at-carbon-tree-node id="root" data="[[data]]" actions="[[actions]]" data-node-id$="[[data.id]]"></at-carbon-tree-node>
-        </div>
+    <template id="root" is="dom-repeat" as="rootnode">
+      <div>
+        <at-carbon-tree-node actions="[[actions]]" data="{{rootnode}}" data-node-id$="[[rootnode.id]]"></at-carbon-tree-node>
+      </div>
     </template>
+  </template>
 
 </dom-module>
 
@@ -29,21 +31,23 @@ Example:
     properties: {
 
       /**
-       * Data hold by the root node (contains the children).
+       * Data is an array of objects. Each object is a root node.
+       * Objects that represent a root node have (contains the children).
        *
        * Specific data:
        *
-       * - `data.name`: string representing the node name.
-       * - `data.icon`: string telling which icon to use (default to 'folder' icon).
-       * - `data.open`: boolean telling whether the node is expanded or not.
-       * - `data.children` array containing the children of the node.
+       * - `obj.name`: string representing the node name.
+       * - `obj.icon`: string telling which icon to use (default to 'folder' icon).
+       * - `obj.open`: boolean telling whether the node is expanded or not.
+       * - `obj.children` array containing the children of the node.
        */
       data: {
-        type: Object,
+        type: Array,
         value: function() {
           return null;
         },
-        observer: "_dataChanged"
+        observer: "_dataChanged",
+        xtype: 'json'
       },
 
       /**
@@ -104,14 +108,17 @@ Example:
         }
         return;
       }
-      this.$.root.data = this.data;
+      var root = this.$$('#root');
+      if (root && this.data) {
+        root.items = this.data;
+      }
     },
 
     /**
      * Called whenever the actions list is changed to notify the lower nodes.
      */
     _actionsChanged: function() {
-      this.$.root.actions = this.actions;
+      // this.$$('#root').actions = this.actions;
     },
 
     /**
@@ -126,11 +133,12 @@ Example:
       var selectedNode;
 
       if (isString(this.selected) && this.selected !== "") {
-        var rootNodeId = this.$.root.getAttribute('data-node-id');
-        selectedNode = this.selected === rootNodeId ? this.$.root : null;
-        if (!selectedNode) {
-          var selector = 'at-carbon-tree-node[data-node-id='+ this.selected +']';
-          selectedNode = this.$.root.querySelector(selector);
+        var rootNodes = this.querySelectorAll('at-carbon-tree-node');
+        for (var i = 0; i < rootNodes.length; i++) {
+          var rootNode = rootNodes[i];
+          var selector = 'at-carbon-tree-node[data-node-id=' + this.selected + ']';
+          selectedNode = this.querySelector(selector);
+          if (selectedNode) { break; }
         }
       }
 

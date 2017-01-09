@@ -32,10 +32,10 @@
                 var tree = document.querySelector('#tree1');
 
                 // Only one node.
-                tree.data = {
+                tree.data = [{
                     "title": "Hello",
                     "id": "hello"
-                };
+                }];
 
             </script>
         </template>
@@ -50,7 +50,7 @@
                 var tree = document.querySelector('#tree2');
 
                 // Some children.
-                tree.data = {
+                tree.data = [{
                     "title": "Hello",
                     "id": "hello",
                     "children": [{
@@ -62,7 +62,7 @@
                         "title": "You",
                         "id": "you"
                     }]
-                };
+                }];
             </script>
         </template>
     </at-doc-snippet>
@@ -77,7 +77,7 @@
                 var tree = document.querySelector('#tree3');
 
                 // Setting some data.
-                tree.data = {
+                tree.data = [{
                     "title": "GOT",
                     "icon": "video",
                     "open": true,
@@ -162,7 +162,7 @@
                             }]
                         }
                     ]
-                };
+                }];
 
                 // Adding one action.
                 tree.actions = [{

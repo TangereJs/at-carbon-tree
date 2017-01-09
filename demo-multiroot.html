@@ -1,0 +1,143 @@
+<!doctype html>
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta title="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <title>at-carbon-tree Demo</title>
+  <script src="../webcomponentsjs/webcomponents-lite.js"></script>
+
+  <link rel="import" href="at-carbon-tree.html">
+  <link rel="import" href="../iron-demo-helpers/demo-pages-shared-styles.html">
+  <!-- <link rel="import" href="../iron-demo-helpers/demo-snippet.html"> -->
+  <link rel="import" href="../at-doc-snippet/at-doc-snippet.html">
+  <style is="custom-style" include="demo-pages-shared-styles"></style>
+  <style is="custom-style">
+     :root {
+      --demo-snippet-demo_-_display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="vertical-section-container centered">
+    <h3>at-doc-snippet has a bug where content of script tag is not evaluated. This breaks at-carbon-tree demo page</h3>
+    <h3>Basic demo with only one node</h3>
+    <at-carbon-tree id="tree1"></at-carbon-tree>
+    <script>
+      var tree = document.querySelector('#tree1');
+
+      // Only one node.
+      tree.data = [{
+        "title": "Starks",
+        "id": "starks",
+        "icon": "star-filled",
+        "children": [{
+            "icon": "user",
+            "title": "Eddard",
+            "id": "eddard"
+          }, {
+            "title": "Catelyn",
+            "icon": "user",
+            "id": "catelyn"
+          }, {
+            "title": "Sansa",
+            "icon": "user",
+            "id": "sansa"
+          },
+          {
+            "title": "Robb",
+            "icon": "user",
+            "id": "robb"
+          }, {
+            "title": "Bran",
+            "icon": "user",
+            "id": "bran"
+          }, {
+            "title": "Arya",
+            "icon": "user",
+            "id": "arya"
+          }, {
+            "title": "Rickson",
+            "icon": "user",
+            "id": "rickson"
+          }
+        ]
+      }, {
+        "title": "Lannisters",
+        "id": "lannisters",
+        "open": true,
+        "icon": "star-filled",
+        "children": [{
+          "title": "Tywin",
+          "icon": "user",
+          "id": "tywin"
+        }, {
+          "title": "Tyrion",
+          "icon": "user",
+          "id": "tyrion"
+        }, {
+          "title": "Jaime",
+          "icon": "user",
+          "id": "jaime"
+        }, {
+          "title": "Cersei",
+          "icon": "user",
+          "id": "cersei"
+        }, {
+          "title": "Tommen",
+          "icon": "user",
+          "id": "tommen"
+        }, {
+          "title": "Myrcella",
+          "icon": "user",
+          "id": "myrcella"
+        }, {
+          "title": "Joffrey",
+          "icon": "user",
+          "id": "joffrey"
+        }]
+      }, {
+        "title": "Targaryens",
+        "id": "targaryens",
+        "icon": "star-filled",
+        "children": [{
+          "title": "Daenerys",
+          "icon": "user",
+          "id": "daenerys"
+        }, {
+          "title": "Viserys",
+          "icon": "user",
+          "id": "viserys"
+        }]
+      }, {
+        "title": "Baratheons",
+        "id": "baratheons",
+        "icon": "star-filled",
+        "open": true,
+        "children": [{
+          "title": "Robert",
+          "icon": "user",
+          "id": "robert"
+        }, {
+          "title": "Stannis",
+          "icon": "user",
+          "id": "stannis"
+        }, {
+          "title": "Renly",
+          "icon": "user",
+          "id": "renly"
+        }]
+      }];
+
+      tree.actions = [{
+        label: 'show',
+        event: 'onshow'
+      }];
+    </script>
+  </div>
+</body>
+
+</html>
