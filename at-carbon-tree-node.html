@@ -212,10 +212,32 @@ Custom property | Description | Default
         },
 
         /**
+         * Returns true of this node is a leaf node
+         * Node is a leaf node if it has no children
+         */
+        isLeaf: function () {
+          return !(this.data.children && this.data.children.length);
+        },
+
+        /**
          * Display/Hide the children nodes.
          */
         toggleChildren: function() {
           this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
+        },
+
+        /**
+         * Collapses the node
+         */
+        collapse: function () {
+          this.set("data.open", false);
+        },
+
+        /**
+         *  Expands the node
+         */
+        expand: function () {
+          this.set("data.open", true);
         }
 
     });

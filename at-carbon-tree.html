@@ -51,12 +51,13 @@ Example:
       },
 
       /**
-       * `selected` is the current selected `<at-carbon-tree-node>` in the tree.
+       * `value` is the current value `<at-carbon-tree-node>` in the tree.
        */
-      selected: {
-        type: Object,
+      value: {
+        type: String,
         value: null,
-        notify: true
+        notify: true,
+        observer: '_valueChanged'
       },
 
       /**
@@ -90,7 +91,15 @@ Example:
     },
 
     listeners: {
-      "select": "_selectNode"
+      "select": "_selectNode",
+      'dom-change': '_domChanged'
+    },
+
+    _domChanged: function (event) {
+      var self = this;
+      this.debounce('recompute selected', function () {
+        self._valueChanged(self.value, undefined);
+      }, 200);
     },
 
     /**
@@ -118,7 +127,11 @@ Example:
      * Called whenever the actions list is changed to notify the lower nodes.
      */
     _actionsChanged: function() {
-      // this.$$('#root').actions = this.actions;
+      var self = this;
+      var rootNodes = this.querySelectorAll('at-carbon-tree-node');
+      rootNodes.forEach(function (rootNode, index) {
+        rootNode.actions = self.actions;
+      });
     },
 
     /**
@@ -132,13 +145,20 @@ Example:
       }
       var selectedNode;
 
-      if (isString(this.selected) && this.selected !== "") {
-        var rootNodes = this.querySelectorAll('at-carbon-tree-node');
-        for (var i = 0; i < rootNodes.length; i++) {
-          var rootNode = rootNodes[i];
-          var selector = 'at-carbon-tree-node[data-node-id=' + this.selected + ']';
-          selectedNode = this.querySelector(selector);
-          if (selectedNode) { break; }
+      if (isString(this.value) && this.value !== "") {
+        var selector = 'at-carbon-tree-node[data-node-id=' + this.value + ']';
+        // check if any root of the multi root nodes is the currently selected node
+        selectedNode = this.querySelector(selector);
+
+        if (!selectedNode) {
+          // if any root node is not selected, check nodes under each multiroot root node
+          var rootNodes = this.querySelectorAll('at-carbon-tree-node');
+          for (var i = 0; i < rootNodes.length; i++) {
+            var rootNode = rootNodes[i];
+            // check if current root node is selected node
+            selectedNode = rootNode.querySelector(selector);
+            if (selectedNode) { break; }
+          }
         }
       }
 
@@ -147,9 +167,68 @@ Example:
       }
 
       selectedNode = e.target;
-      this.selected = e.target.getAttribute("data-node-id");
+      this.value = e.target.getAttribute("data-node-id");
 
       this.toggleClass("selected", true, selectedNode);
+    },
+
+    _valueChanged: function (newValue, oldValue) {
+      function isString(obj) {
+        return Object.prototype.toString.call(obj) === "[object String]";
+      }
+      if (!isString(newValue) || newValue === "") { return; }
+      var tmpOldValue = isString(oldValue) ? oldValue : "";
+
+      // deselect previous node
+      var selectedNode = this._getSelectedNode(oldValue);
+      if (selectedNode) {
+        this.toggleClass("selected", false, selectedNode);
+      }
+
+      // collapse all root nodes in multiroot
+      var nodeSelector = 'at-carbon-tree-node';
+      var rootNodes = this.querySelectorAll(nodeSelector);
+      rootNodes.forEach(function (rootNode, index) {
+        rootNode.collapse();
+      });
+
+      // find the new selected node
+      selectedNode = this._getSelectedNode(newValue);
+      if (selectedNode) {
+        selectedNode.select();
+
+        // if its a root node do nothing
+
+        if (selectedNode.isLeaf()) {
+          // if its a leaf under a root node, expand the root node
+          var parentNode = this._findParent(selectedNode);
+          if (parentNode) {
+            parentNode.expand();
+          }
+        }
+      }
+    },
+
+    _getSelectedNode: function (nodeId) {
+      var nodeSelector = 'at-carbon-tree-node';
+      var selectorById = 'at-carbon-tree-node[data-node-id=' + nodeId + ']';
+
+      var selectedNode = this.querySelector(selectorById);
+      if (selectedNode) { return selectedNode; }
+
+      var rootNodes = this.querySelectorAll(nodeSelector);
+      for (var i = 0; i < rootNodes.length; i++) {
+        var rootNode = rootNodes[i];
+
+        selectedNode = rootNode.querySelector(selectorById);
+        if (selectedNode) { return selectedNode; }
+      }
+    },
+
+    _findParent: function (leafNode) {
+      var parentNode = leafNode.parentElement;
+      while(parentNode && parentNode.tagName !== "AT-CARBON-TREE-NODE") { parentNode = parentNode.parentElement; }
+      return parentNode;
     }
 
   });

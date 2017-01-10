@@ -13,21 +13,27 @@
   <!-- <link rel="import" href="../iron-demo-helpers/demo-snippet.html"> -->
   <link rel="import" href="../at-doc-snippet/at-doc-snippet.html">
   <style is="custom-style" include="demo-pages-shared-styles"></style>
-  <style is="custom-style">
-     :root {
-      --demo-snippet-demo_-_display: block;
-    }
-  </style>
 </head>
 
 <body>
 
   <div class="vertical-section-container centered">
-    <h3>at-doc-snippet has a bug where content of script tag is not evaluated. This breaks at-carbon-tree demo page</h3>
-    <h3>Basic demo with only one node</h3>
-    <at-carbon-tree id="tree1"></at-carbon-tree>
+    <h3>Multiroot demo with several root nodes</h3>
+    <div class="horizontal-section-container">
+      <div class="flex-6">
+        <at-carbon-tree id="tree1"></at-carbon-tree>
+      </div>
+      <div class="flex-6">
+        Selected value: <span id="selectedValueEcho"></span>
+      </div>
+    </div>
     <script>
       var tree = document.querySelector('#tree1');
+      var selectedEcho = document.getElementById('selectedValueEcho');
+
+      tree.addEventListener('value-changed', function(event) {
+        selectedEcho.innerHTML = event.detail.value;
+      });
 
       // Only one node.
       tree.data = [{
@@ -136,8 +142,9 @@
         label: 'show',
         event: 'onshow'
       }];
-      
-      tree.selected = "viserys";
+
+      tree.value = "viserys";
+      selectedEcho.innerHTML = tree.value;
     </script>
   </div>
 </body>
