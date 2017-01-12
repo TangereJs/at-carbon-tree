@@ -10,7 +10,6 @@
     "at-carbon-icon": "TangereJs/at-carbon-icon#master",
     "at-carbon-icon-button": "TangereJs/at-carbon-icon-button#master",
     "at-doc-viewer": "TangereJs/at-doc-viewer#master",
-    "at-doc-snippet": "TangereJs/at-doc-snippet#master",
-    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#master"
+    "at-doc-snippet": "TangereJs/at-doc-snippet#master"
   }
 }
