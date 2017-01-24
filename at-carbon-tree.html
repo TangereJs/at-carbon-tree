@@ -185,13 +185,6 @@ Example:
         this.toggleClass("selected", false, selectedNode);
       }
 
-      // collapse all root nodes in multiroot
-      var nodeSelector = 'at-carbon-tree-node';
-      var rootNodes = this.querySelectorAll(nodeSelector);
-      rootNodes.forEach(function (rootNode, index) {
-        rootNode.collapse();
-      });
-
       // find the new selected node
       selectedNode = this._getSelectedNode(newValue);
       if (selectedNode) {
