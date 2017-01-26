@@ -119,7 +119,54 @@ Example:
       }
       var root = this.$$('#root');
       if (root && this.data) {
+
+        var parentIds = [];
+        if (this.value) {
+          // find where the child with id of this.value is and give all parents open: true
+
+          for (var i = 0; i < this.data.length; i++) {
+            var localroot = this.data[i];
+            parentIds = this._findParentChain(localroot, this.value);
+
+            if (parentIds && parentIds.length) {
+              break;
+            }
+          }
+        }
+
+        if (parentIds && parentIds.length) {
+          var localroot2 = this.data;
+          for (var j = 0; j < parentIds.length; j++) {
+            var parentId = parentIds[j];
+            var parentNode = localroot2.find(function (node) {
+              return node.id === parentId;
+            });
+            parentNode.open = true;
+            localroot2 = parentNode.children;
+            if (!localroot2) { parentNode.selected = true; }
+          }
+        }
+
         root.items = this.data;
+      }
+    },
+
+    _findParentChain: function (node, value) {
+      if (!node.id) { return null; }
+
+      if (node.id === value) {
+        return [ node.id ];
+      } else {
+        if (!node.children || !node.children.length) { return null; }
+        for (var i = 0; i < node.children.length; i++) {
+          var child = node.children[i];
+          var parentChain = this._findParentChain(child, value);
+          if (parentChain && parentChain.length) {
+            parentChain = [ node.id ].concat(parentChain);
+            return parentChain;
+          }
+        }
+        if (i === node.children.length) { return null; }
       }
     },
 

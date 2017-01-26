@@ -35,6 +35,9 @@
         selectedEcho.innerHTML = event.detail.value;
       });
 
+      tree.value = "viserys";
+      selectedEcho.innerHTML = tree.value;
+
       // Only one node.
       tree.data = [{
         "title": "Starks",
@@ -141,8 +144,6 @@
         event: 'onshow'
       }];
 
-      tree.value = "viserys";
-      selectedEcho.innerHTML = tree.value;
     </script>
   </div>
 </body>

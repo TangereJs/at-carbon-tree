@@ -114,7 +114,7 @@ Custom property | Description | Default
             <ul hidden$={{!data.open}}>
                 <template is="dom-repeat" items="{{data.children}}">
                     <li>
-                        <at-carbon-tree-node data="{{item}}" actions="{{actions}}" data-node-id$=[[item.id]]></at-carbon-tree-node>
+                        <at-carbon-tree-node class$="{{_computeSelectedClass(item)}}" data="{{item}}" actions="{{actions}}" data-node-id$=[[item.id]]></at-carbon-tree-node>
                     </li>
                 </template>
             </ul>
@@ -184,6 +184,11 @@ Custom property | Description | Default
 
         _computeDispalyActions: function(actions) {
           return actions && actions.length;
+        },
+
+        _computeSelectedClass: function(item) {
+          if (item.selected) { return "selected" }
+          return "";
         },
 
         /**
