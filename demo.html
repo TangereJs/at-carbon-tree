@@ -9,8 +9,8 @@
 
     <link rel="import" href="at-carbon-tree.html">
     <link rel="import" href="../iron-demo-helpers/demo-pages-shared-styles.html">
-    <!-- <link rel="import" href="../iron-demo-helpers/demo-snippet.html"> -->
-    <link rel="import" href="../at-doc-snippet/at-doc-snippet.html">
+    <link rel="import" href="../iron-demo-helpers/demo-snippet.html">
+    <!-- <link rel="import" href="../at-doc-snippet/at-doc-snippet.html"> -->
     <style is="custom-style" include="demo-pages-shared-styles"></style>
     <style is="custom-style">
       :root {
@@ -24,7 +24,7 @@
     <h3>at-doc-snippet has a bug where content of script tag is not evaluated. This breaks at-carbon-tree demo page</h3>
 
     <h3>Basic demo with only one node</h3>
-    <at-doc-snippet>
+    <demo-snippet>
         <template>
             <at-carbon-tree id="tree1"></at-carbon-tree>
             <script>
@@ -39,10 +39,10 @@
 
             </script>
         </template>
-    </at-doc-snippet>
+    </demo-snippet>
 
     <h3>Basic demo with one root node and some children</h3>
-    <at-doc-snippet>
+    <demo-snippet>
         <template>
             <at-carbon-tree id="tree2"></at-carbon-tree>
             <script>
@@ -65,11 +65,11 @@
                 }];
             </script>
         </template>
-    </at-doc-snippet>
+    </demo-snippet>
 
 
     <h3>Complex tree demo</h3>
-    <at-doc-snippet>
+    <demo-snippet>
         <template>
             <at-carbon-tree id="tree3"></at-carbon-tree>
             <script>
@@ -177,7 +177,7 @@
 
             </script>
         </template>
-    </at-doc-snippet>
+    </demo-snippet>
 
 </div>
 </body>
