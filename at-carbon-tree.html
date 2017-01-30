@@ -16,7 +16,7 @@ Example:
   <template>
     <template id="root" is="dom-repeat" as="rootnode">
       <div>
-        <at-carbon-tree-node actions="[[actions]]" data="{{rootnode}}" data-node-id$="[[rootnode.id]]"></at-carbon-tree-node>
+        <at-carbon-tree-node actions="[[actions]]" data="{{rootnode}}" class$="{{_computeSelectedClass(rootnode)}}" data-node-id$="[[rootnode.id]]"></at-carbon-tree-node>
       </div>
     </template>
   </template>
@@ -91,15 +91,7 @@ Example:
     },
 
     listeners: {
-      "select": "_selectNode",
-      'dom-change': '_domChanged'
-    },
-
-    _domChanged: function (event) {
-      var self = this;
-      this.debounce('recompute selected', function () {
-        self._valueChanged(self.value, undefined);
-      }, 200);
+      "select": "_selectNode"
     },
 
     /**
@@ -143,7 +135,9 @@ Example:
             });
             parentNode.open = true;
             localroot2 = parentNode.children;
-            if (!localroot2) { parentNode.selected = true; }
+            if (j==parentIds.length - 1) {
+              parentNode.selected = true;
+            }
           }
         }
 
@@ -190,6 +184,7 @@ Example:
       function isString(obj) {
         return Object.prototype.toString.call(obj) === "[object String]";
       }
+
       var selectedNode;
 
       if (isString(this.value) && this.value !== "") {
@@ -268,6 +263,11 @@ Example:
       var parentNode = leafNode.parentElement;
       while(parentNode && parentNode.tagName !== "AT-CARBON-TREE-NODE") { parentNode = parentNode.parentElement; }
       return parentNode;
+    },
+
+    _computeSelectedClass: function(item) {
+      if (item.selected) { return "selected" }
+      return "";
     }
 
   });
