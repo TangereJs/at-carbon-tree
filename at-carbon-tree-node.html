@@ -27,7 +27,7 @@ Custom property | Description | Default
 -->
 
 <dom-module id="at-carbon-tree-node">
-
+  <template>
     <style>
 
         :host.selected > .node-container > .node-row {
@@ -94,7 +94,7 @@ Custom property | Description | Default
         }
     </style>
 
-    <template>
+
         <div class="node-container">
             <div class="node-row" hidden$={{!data}}>
                 <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
