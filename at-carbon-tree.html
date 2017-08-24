@@ -170,7 +170,7 @@ Example:
     _actionsChanged: function() {
       var self = this;
       var rootNodes = this.querySelectorAll('at-carbon-tree-node');
-      rootNodes.forEach(function (rootNode, index) {
+      Array.prototype.forEach.call(rootNodes, function (rootNode, index) {
         rootNode.actions = self.actions;
       });
     },

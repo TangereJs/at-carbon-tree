@@ -33,9 +33,9 @@
         });
 
         test('_dataChanged', function() {
-            tree.data = { name: 'root' };
+            tree.data = [{ name: 'root' }];
             tree._dataChanged();
-            assert.equal(tree.$.root.data, tree.data);
+            assert.equal(tree.$.root.items, tree.data);
         });
 
         test('_selectNode', function() {
@@ -50,7 +50,7 @@
             assert.equal(found, false);
             assert.equal(document.body.className, 'selected');
             tree._selectNode({ target: node });
-            assert.equal(document.body.className, '');
+            assert.equal(document.body.className, 'selected');
             for(var i=0; i<node.classList.length; i++){
                 if(node.classList[i] === 'selected') {
                     found = true;
@@ -102,11 +102,18 @@
         });
 
         test('select node', function(done) {
+            tree.data = [{ name: 'root' }];
+            tree._dataChanged();
+            Polymer.dom.flush();
+            var rootNodes = tree.querySelectorAll('at-carbon-tree-node');
+            assert.equal(rootNodes.length, 1);
+
+            var rootNode = rootNodes[0];
             tree.addEventListener('select', function(event) {
-                assert.equal(event.detail, tree.$.root);
+                assert.equal(event.detail, rootNode);
                 done();
             });
-            tree.$.root.select();
+            rootNode.select();
         });
 
         test('toggle children', function() {
