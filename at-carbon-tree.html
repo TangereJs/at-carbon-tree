@@ -233,12 +233,11 @@ Example:
         this._selectNode({ target: selectedNode });
         // if its a root node do nothing
 
-        if (selectedNode.isLeaf()) {
-          // if its a leaf under a root node, expand the root node
-          var parentNode = this._findParent(selectedNode);
-          if (parentNode) {
-            parentNode.expand();
-          }
+        // expand parent nodes
+        var nextParent = this._findParent(selectedNode);
+        while(nextParent) {
+          nextParent.expand();
+          nextParent = this._findParent(nextParent);
         }
       }
     },
