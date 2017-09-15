@@ -4,6 +4,7 @@
 <link rel="import" href="../at-carbon-icon-button/at-carbon-icon-button.html">
 <link rel="import" href="../paper-menu/paper-menu.html">
 <link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../at-core-style-classes/at-core-style-classes.html" />
 
 <!--
 `<at-carbon-tree-node>` display a tree node with expandable/collapsible capabilities and actions menu.
@@ -28,10 +29,10 @@ Custom property | Description | Default
 
 <dom-module id="at-carbon-tree-node">
   <template>
-    <style>
+    <style include="at-core-style-classes">
 
         :host.selected > .node-container > .node-row {
-            background-color: var(--at-carbon-tree-selected-background-color, rgba(200, 200, 200, 0.5));
+            /*background-color: var(--at-carbon-tree-selected-background-color, rgba(200, 200, 200, 0.5));*/
             color: var(--at-carbon-tree-selected-color, rgb(0, 0, 0));
         }
 
@@ -67,6 +68,10 @@ Custom property | Description | Default
             cursor: pointer;
         }
 
+        :host.selected > .node-container > .node-row > .node-name {
+          font-weight: bold;
+        }
+
         .node-icon {
             cursor: pointer;
             width: 24px;
@@ -98,14 +103,14 @@ Custom property | Description | Default
         <div class="node-container">
             <div class="node-row" hidden$={{!data}}>
                 <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
-                <at-carbon-icon class="node-icon" icon$="{{_computeIcon(data.icon)}}" on-click="select"></at-carbon-icon>
-                <span class="node-name" on-click="select">{{_computeDisplayTitle(data)}}</span>
+                <at-carbon-icon class="node-icon" hidden$="[[!data.icon]]" icon="[[data.icon]]" on-click="select"></at-carbon-icon>
+                <span class="node-name font-body1" on-click="select">{{_computeDisplayTitle(data)}}</span>
                 <template is="dom-if" if="{{_computeDispalyActions(actions)}}">
                     <paper-menu-button id="actions">
                         <at-carbon-icon-button icon="menu2" noink class="dropdown-trigger"></at-carbon-icon-button>
                         <paper-menu class="dropdown-content">
                             <template is="dom-repeat" items="{{actions}}">
-                                <paper-item on-click="_actionClicked">{{item.label}}</paper-item>
+                                <paper-item on-click="_actionClicked" class="font-body1">{{item.label}}</paper-item>
                             </template>
                         </paper-menu>
                     </paper-menu-button>
