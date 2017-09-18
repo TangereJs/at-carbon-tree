@@ -30,226 +30,218 @@ Custom property | Description | Default
 <dom-module id="at-carbon-tree-node">
   <template>
     <style include="at-core-style-classes">
+       :host.selected>.node-container>.node-row {
+        /*background-color: var(--at-carbon-tree-selected-background-color, rgba(200, 200, 200, 0.5));*/
+        color: var(--at-carbon-tree-selected-color, rgb(0, 0, 0));
+      }
 
-        :host.selected > .node-container > .node-row {
-            /*background-color: var(--at-carbon-tree-selected-background-color, rgba(200, 200, 200, 0.5));*/
-            color: var(--at-carbon-tree-selected-color, rgb(0, 0, 0));
-        }
+       :host.selected>.node-container>.node-row>#actions {
+        display: inline-block;
+      }
 
-        :host.selected > .node-container > .node-row > #actions {
-            display: inline-block;
-        }
+      .node-row {
+        padding-left: 4px;
+        padding-right: 4px;
+      }
 
-        .node-row {
-            padding-left: 4px;
-            padding-right: 4px;
-        }
+      .node-preicon {
+        padding-left: 23px;
+      }
 
-        .node-preicon {
-            padding-left: 23px;
-        }
+      .node-preicon.collapsed,
+      .node-preicon.expanded {
+        padding-left: 0px;
+      }
 
-        .node-preicon.collapsed,
-        .node-preicon.expanded {
-            padding-left: 0px;
-        }
+      .node-preicon.collapsed:before {
+        content: '\002B';
+        padding: 5px;
+      }
 
-        .node-preicon.collapsed:before {
-            content: '\002B';
-            padding: 5px;
-        }
+      .node-preicon.expanded:before {
+        content: '\2212';
+        padding: 5px;
+      }
 
-        .node-preicon.expanded:before {
-            content: '\2212';
-            padding: 5px;
-        }
+      .node-preicon,
+      .node-name {
+        cursor: pointer;
+      }
 
-        .node-preicon, .node-name {
-            cursor: pointer;
-        }
+       :host.selected>.node-container>.node-row>.node-name {
+        font-weight: bold;
+      }
 
-        :host.selected > .node-container > .node-row > .node-name {
-          font-weight: bold;
-        }
+      .node-icon {
+        cursor: pointer;
+        width: 24px;
+        height: 24px;
+      }
 
-        .node-icon {
-            cursor: pointer;
-            width: 24px;
-            height: 24px;
-        }
+      #actions {
+        display: none;
+        float: right;
+        padding: 0;
+        top: -8px;
+        /* cancel the padding of `at-carbon-icon-button`. */
+      }
 
-        #actions {
-            display: none;
-            float: right;
-            padding: 0;
-            top: -8px; /* cancel the padding of `at-carbon-icon-button`. */
-        }
+      ul {
+        margin: 0;
+        padding-left: 20px;
+      }
 
-        ul {
-            margin: 0;
-            padding-left: 20px;
-        }
+      li {
+        list-style-type: none;
+      }
 
-        li {
-            list-style-type: none;
-        }
-
-        [hidden] {
-            display: none;
-        }
+      [hidden] {
+        display: none;
+      }
     </style>
 
-
-        <div class="node-container">
-            <div class="node-row" hidden$={{!data}}>
-                <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
-                <at-carbon-icon class="node-icon" hidden$="[[!data.icon]]" icon="[[data.icon]]" on-click="select"></at-carbon-icon>
-                <span class="node-name font-body1" on-click="select">{{_computeDisplayTitle(data)}}</span>
-                <template is="dom-if" if="{{_computeDispalyActions(actions)}}">
-                    <paper-menu-button id="actions">
-                        <at-carbon-icon-button icon="menu2" noink class="dropdown-trigger"></at-carbon-icon-button>
-                        <paper-menu class="dropdown-content">
-                            <template is="dom-repeat" items="{{actions}}">
-                                <paper-item on-click="_actionClicked" class="font-body1">{{item.label}}</paper-item>
-                            </template>
-                        </paper-menu>
-                    </paper-menu-button>
-                </template>
-            </div>
-            <ul hidden$={{!data.open}}>
-                <template is="dom-repeat" items="{{data.children}}">
-                    <li>
-                        <at-carbon-tree-node class$="{{_computeSelectedClass(item)}}" data="{{item}}" actions="{{actions}}" data-node-id$=[[item.id]]></at-carbon-tree-node>
-                    </li>
-                </template>
-            </ul>
-        </div>
-    </template>
-
+    <div class="node-container">
+      <div class="node-row" hidden$={{!data}}>
+        <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
+        <at-carbon-icon class="node-icon" hidden$="[[!data.icon]]" icon="[[data.icon]]" on-click="select"></at-carbon-icon>
+        <span class="node-name font-body1" on-click="select">{{_computeDisplayTitle(data)}}</span>
+        <template is="dom-if" if="{{_computeDispalyActions(actions)}}">
+          <paper-menu-button id="actions">
+            <at-carbon-icon-button icon="menu2" noink class="dropdown-trigger"></at-carbon-icon-button>
+            <paper-menu class="dropdown-content">
+              <template is="dom-repeat" items="{{actions}}">
+                <paper-item on-click="_actionClicked" class="font-body1">{{item.label}}</paper-item>
+              </template>
+            </paper-menu>
+          </paper-menu-button>
+        </template>
+      </div>
+      <ul hidden$={{!data.open}}>
+        <template is="dom-repeat" items="{{data.children}}">
+          <li>
+            <at-carbon-tree-node class$="{{_computeSelectedClass(item)}}" data="{{item}}" actions="{{actions}}" data-node-id$=[[item.id]]></at-carbon-tree-node>
+          </li>
+        </template>
+      </ul>
+    </div>
+  </template>
 </dom-module>
-
 <script>
+  Polymer({
+    is: 'at-carbon-tree-node',
+    properties: {
 
-    Polymer({
-
-        is: 'at-carbon-tree-node',
-
-        properties: {
-
-            /**
-             * Data hold by this node (contains the children).
-             *
-             * Specific data:
-             *
-             * - `data.name`: string representing the node name.
-             * - `data.icon`: string telling which icon to use (default to 'folder' icon).
-             * - `data.open`: boolean telling whether the node is expanded or not.
-             * - `data.children` array containing the children of the node.
-             */
-            data: {
-                type: Object,
-                value: function() {
-                    return null;
-                }
-            },
-
-            /**
-             * `actions` available for this node. Each action object has the following fields:
-             *
-             * - `action.label`: string representing the display name of the menu item.
-             * - `action.event`: string which is the event name to dispatch whenever the item is clicked.
-             *
-             */
-            actions: {
-                type: Array,
-                value: function() {
-                    return null;
-                }
-            }
-
-        },
-
-        /**
-         * The `select` event is fired whenever `select()` is called on the node.
-         *
-         * @event select
-         */
-
-        /**
-         * Returns the necessary classes.
-         *
-         * @param {object} change An object containing the property that changed and its value.
-         * @return {string} The class name indicating whether the node is open or closed
-         */
-        _computeClass: function(change) {
-            var open = change && change.base && change.base.open;
-            var children = change && change.base && change.base.children;
-            return 'node-preicon ' + ((open && children && children.length) ? 'expanded' : children && children.length ? 'collapsed' : '');
-        },
-
-        _computeDispalyActions: function(actions) {
-          return actions && actions.length;
-        },
-
-        _computeSelectedClass: function(item) {
-          if (item.selected) { return "selected" }
-          return "";
-        },
-
-        /**
-         * Compute the necessary node icon.
-         *
-         * @param {string=folder} an icon name.
-         * @return {string} the computed icon name.
-         */
-        _computeIcon: function(icon) {
-            return icon ? icon : 'folder';
-        },
-
-        _computeDisplayTitle: function(data) {
-          return data ? (data.title || data.id) : "";
-        },
-
-        _actionClicked: function (event) {
-            this.fire(event.model.item.event, this);
-        },
-
-        /**
-         * Highlights node as the selected node.
-         */
-        select: function() {
-            this.fire("select", this);
-        },
-
-        /**
-         * Returns true of this node is a leaf node
-         * Node is a leaf node if it has no children
-         */
-        isLeaf: function () {
-          return !(this.data.children && this.data.children.length);
-        },
-
-        /**
-         * Display/Hide the children nodes.
-         */
-        toggleChildren: function() {
-          this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
-        },
-
-        /**
-         * Collapses the node
-         */
-        collapse: function () {
-          this.set("data.open", false);
-        },
-
-        /**
-         *  Expands the node
-         */
-        expand: function () {
-          this.set("data.open", true);
+      /**
+       * Data hold by this node (contains the children).
+       *
+       * Specific data:
+       *
+       * - `data.name`: string representing the node name.
+       * - `data.icon`: string telling which icon to use (default to 'folder' icon).
+       * - `data.open`: boolean telling whether the node is expanded or not.
+       * - `data.children` array containing the children of the node.
+       */
+      data: {
+        type: Object,
+        value: function() {
+          return null;
         }
+      },
 
-    });
+      /**
+       * `actions` available for this node. Each action object has the following fields:
+       *
+       * - `action.label`: string representing the display name of the menu item.
+       * - `action.event`: string which is the event name to dispatch whenever the item is clicked.
+       *
+       */
+      actions: {
+        type: Array,
+        value: function() {
+          return null;
+        }
+      }
+    },
 
+    /**
+     * The `select` event is fired whenever `select()` is called on the node.
+     *
+     * @event select
+     */
+    /**
+     * Returns the necessary classes.
+     *
+     * @param {object} change An object containing the property that changed and its value.
+     * @return {string} The class name indicating whether the node is open or closed
+     */
+    _computeClass: function(change) {
+      var open = change && change.base && change.base.open;
+      var children = change && change.base && change.base.children;
+      return 'node-preicon ' + ((open && children && children.length) ? 'expanded' : children && children.length ? 'collapsed' : '');
+    },
+
+    _computeDispalyActions: function(actions) {
+      return actions && actions.length;
+    },
+
+    _computeSelectedClass: function(item) {
+      if (item.selected) { return "selected" }
+      return "";
+    },
+
+    /**
+     * Compute the necessary node icon.
+     *
+     * @param {string=folder} an icon name.
+     * @return {string} the computed icon name.
+     */
+    _computeIcon: function(icon) {
+      return icon ? icon : 'folder';
+    },
+
+    _computeDisplayTitle: function(data) {
+      return data ? (data.title || data.id) : "";
+    },
+
+    _actionClicked: function(event) {
+      this.fire(event.model.item.event, this);
+    },
+
+    /**
+     * Highlights node as the selected node.
+     */
+    select: function() {
+      this.fire("select", this);
+    },
+
+    /**
+     * Returns true of this node is a leaf node
+     * Node is a leaf node if it has no children
+     */
+    isLeaf: function() {
+      return !(this.data.children && this.data.children.length);
+    },
+
+    /**
+     * Display/Hide the children nodes.
+     */
+    toggleChildren: function() {
+      this.set("data.open", !this.data.open && this.data.children && this.data.children.length);
+    },
+
+    /**
+     * Collapses the node
+     */
+    collapse: function() {
+      this.set("data.open", false);
+    },
+
+    /**
+     *  Expands the node
+     */
+    expand: function() {
+      this.set("data.open", true);
+    }
+  });
 </script>
+
