@@ -109,40 +109,56 @@ Example:
         }
         return;
       }
+      
+      if (!this.data) return;
+
       var root = this.$$('#root');
-      if (root && this.data) {
+      if (!root) return;
 
-        var parentIds = [];
-        if (this.value) {
-          // find where the child with id of this.value is and give all parents open: true
+      // support both .items and .children as properties containing children with items having priority
+      this._updateNodeChildrenProperty(this.data);
 
-          for (var i = 0; i < this.data.length; i++) {
-            var localroot = this.data[i];
-            parentIds = this._findParentChain(localroot, this.value);
+      var parentIds = [];
+      if (this.value) {
+        // find where the child with id of this.value is and give all parents open: true
 
-            if (parentIds && parentIds.length) {
-              break;
-            }
+        for (var i = 0; i < this.data.length; i++) {
+          var localroot = this.data[i];
+          parentIds = this._findParentChain(localroot, this.value);
+
+          if (parentIds && parentIds.length) {
+            break;
           }
         }
-
-        if (parentIds && parentIds.length) {
-          var localroot2 = this.data;
-          for (var j = 0; j < parentIds.length; j++) {
-            var parentId = parentIds[j];
-            var parentNode = localroot2.find(function (node) {
-              return node.id === parentId;
-            });
-            parentNode.open = true;
-            localroot2 = parentNode.children;
-            if (j==parentIds.length - 1) {
-              parentNode.selected = true;
-            }
-          }
-        }
-
-        root.items = this.data;
       }
+
+      if (parentIds && parentIds.length) {
+        var localroot2 = this.data;
+        for (var j = 0; j < parentIds.length; j++) {
+          var parentId = parentIds[j];
+          var parentNode = localroot2.find(function (node) {
+            return node.id === parentId;
+          });
+          parentNode.open = true;
+          localroot2 = parentNode.children;
+          if (j==parentIds.length - 1) {
+            parentNode.selected = true;
+          }
+        }
+      }
+
+      root.items = this.data;
+    },
+
+    // nodes is array of tree nodes
+    // this function iteraties through the nodes and assignes items property (if exists) to children property, because at-carbon-tree-node only recognizes children property 
+    _updateNodeChildrenProperty: function(nodes) {
+      nodes.forEach(function(node, index) {
+        node.children = node.items || node.children;
+        if (node.children && node.children.length) {
+          this._updateNodeChildrenProperty(node.children);
+        }
+      }, this);
     },
 
     _findParentChain: function (node, value) {
