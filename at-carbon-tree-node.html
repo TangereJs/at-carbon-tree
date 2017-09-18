@@ -104,7 +104,12 @@ Custom property | Description | Default
       <div class="node-row" hidden$={{!data}}>
         <span class$="{{_computeClass(data.*)}}" on-click="toggleChildren"></span>
         <at-carbon-icon class="node-icon" hidden$="[[!data.icon]]" icon="[[data.icon]]" on-click="select"></at-carbon-icon>
-        <span class="node-name font-body1" on-click="select">{{_computeDisplayTitle(data)}}</span>
+        <template is="dom-if" if="[[!data.link]]">
+          <span class="node-name font-body1" on-click="select">{{_computeDisplayTitle(data)}}</span>
+        </template>
+        <template is="dom-if" if="[[data.link]]">
+          <a class="node-name font-body1" on-click="select" href$="[[data.link]]" title$="[[data.link]]">[[_computeDisplayTitle(data)]]</a>
+        </template>
         <template is="dom-if" if="{{_computeDispalyActions(actions)}}">
           <paper-menu-button id="actions">
             <at-carbon-icon-button icon="menu2" noink class="dropdown-trigger"></at-carbon-icon-button>
