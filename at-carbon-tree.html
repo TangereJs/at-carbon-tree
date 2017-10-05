@@ -136,9 +136,7 @@ Example:
         var localroot2 = this.data;
         for (var j = 0; j < parentIds.length; j++) {
           var parentId = parentIds[j];
-          var parentNode = localroot2.find(function (node) {
-            return node.id === parentId;
-          });
+          var parentNode = this._findParentNode(localroot2, parentId);
           parentNode.open = true;
           localroot2 = parentNode.children;
           if (j==parentIds.length - 1) {
@@ -148,6 +146,15 @@ Example:
       }
 
       root.items = this.data;
+    },
+
+    // replaced array.find with this private function because IE doesn't support array.find function
+    _findParentNode: function(nodes, parentId) {
+      for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
+        if (node.id === parentId) return node;
+      }
+      return null;
     },
 
     // nodes is array of tree nodes
@@ -254,6 +261,11 @@ Example:
         while(nextParent) {
           nextParent.expand();
           nextParent = this._findParent(nextParent);
+        }
+
+        // if selectedNode has children expand selectedNode
+        if (selectedNode.children && selectedNode.children.length) {
+          selectedNode.expand();
         }
       }
     },
