@@ -39,7 +39,11 @@ Custom property | Description | Default
         display: inline-block;
       }
 
-      .node-row { }
+      .node-row { 
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
 
       .node-preicon {
         padding-left: 23px;
