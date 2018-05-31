@@ -105,7 +105,17 @@
             tree.data = [{ name: 'root' }];
             tree._dataChanged();
             Polymer.dom.flush();
-            var rootNodes = tree.querySelectorAll('at-carbon-tree-node');
+            
+            // START OF HYBRID ELEMENT BEHAVIOR
+            var rootNodes;
+            if (tree.shadowRoot) {
+              rootNodes = tree.shadowRoot.querySelectorAll('at-carbon-tree-node');
+
+            } else {
+              rootNodes = tree.querySelectorAll('at-carbon-tree-node');
+            }
+            // END OF HYBRID ELEMENT BEHAVIOR
+            
             assert.equal(rootNodes.length, 1);
 
             var rootNode = rootNodes[0];
