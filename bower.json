@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "dependencies": {
     "tangere": "TangereJs/tangere#master",
-    "paper-menu": "PolymerElements/paper-menu#^2.0.0",
+    "paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
     "paper-menu-button": "PolymerElements/paper-menu-button#^2.0.0",
     "paper-item": "PolymerElements/paper-item#^2.0.0",
     "at-carbon-icon": "TangereJs/at-carbon-icon#master",
